@@ -1,232 +1,380 @@
-
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Copyright Infringement Detection in Text-to-Image Diffusion Models via Differential Privacy</title>
-    <link rel="stylesheet" href="../pub_style.css">
-    <link href="https://fonts.cdnfonts.com/css/google-sans" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="Copyright Infringement Detection in Text-to-Image Diffusion Models via Differential Privacy">
+  <meta name="keywords" content="Copyright Infringement Detection, Diffusion Model, Differential Privacy">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Copyright Infringement Detection in Text-to-Image Diffusion Models via Differential Privacy</title>
 
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-JP76QXZGKM"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-JP76QXZGKM');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="../static/css/bulma.min.css">
+  <link rel="stylesheet" href="../static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="../static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="../static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="../static/css/index.css">
+  <link rel="icon" href="./static/images/favicon.svg">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="../static/js/fontawesome.all.min.js"></script>
+  <script src="../static/js/bulma-carousel.min.js"></script>
+  <script src="../static/js/bulma-slider.min.js"></script>
+  <script src="../static/js/index.js"></script>
+
+  <style>
+    html {
+        scroll-behavior: smooth;
+    }
+  </style>
+</head>
 <body>
 
-    <a href="https://github.com/leo-xfm" class="github-corner" target="_blank">
-        <i class="fa-brands fa-github fa-2x"></i>
-    </a>
+<nav class="navbar" role="navigation" aria-label="main navigation" style="position: fixed; width: 100%;">  
+  
+  <div class="navbar-menu" style="background-color: #ebebeb;">
+    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+      
+      <a class="navbar-item mr-4" href="https://github.com/leo-xfm">
+        <span class="icon">
+            <i class="fas fa-home"></i>
+        </span>
+      </a>
 
-    <nav>
-        <div class="nav-container">
-            <ul>
-                <li><a href="#intro">Introduction</a></li> 
-                <li><a href="#method">Method</a></li> 
-                <li><a href="#results">Results</a></li> 
-                <li><a href="#dataset">Dataset</a></li> 
-                <li><a href="#cite">BibTex</a></li> 
-            </ul>
-        </div>
-    </nav>
+      <a class="navbar-item" href="#abstract">Abstract</a>
+      <a class="navbar-item" href="#method">Method</a>
+      <a class="navbar-item" href="#result">Results</a>
+      <a class="navbar-item" href="#dataset">Dataset</a>
+      <a class="navbar-item" href="#bibteX">BibTeX</a>
 
-    <div class="container">
-
-        <header>
-            <h1>Copyright Infringement Detection in Text-to-Image Diffusion Models via Differential Privacy</h1>
-
-            <div class="author">
-                <p>
-                    Xiafeng Man<sup>1</sup>, 
-                    Zhipeng Wei<sup>3,4</sup>, 
-                    Jingjing Chen<sup>2†</sup>
-                </p>
-            </div>
-            
-            <div class="organization">
-                <p>
-                    <sup>1</sup>College of Future Information Technology, Fudan University, Shanghai, China<br>
-                    <sup>2</sup>Institute of Trustworthy Embodied AI, Fudan University, Shanghai, China<br>       
-                    <sup>3</sup>International Computer Science Institute, CA, USA<br>           
-                    <sup>4</sup>UC Berkeley, CA, USA
-                </p>
-            </div>
-            
-            <div class="social-links">
-                <a href="https://arxiv.org/abs/2509.23022" target="_blank">Paper</a>
-                <a href="https://github.com/leo-xfm/DPM-copyright-infringement-detection" target="_blank">Code</a>
-                <a href="#" target="_blank">Dataset (Coming Soon)</a>
-            </div>
-        </header>
-
-        
-
-        <main>
-            <section id="intro">
-                <p>
-                    <strong>TL;DR: </strong> We formalize the concept of copyright infringement and its detection from the perspective of <strong>Differential Privacy (DP)</strong>, and introduce a novel post-hoc detection framework <strong>D-Plus-Minus (DPM)</strong>. It simulates the inclusion or exclusion processes of a specific training data point to be detected by fine-tuning models in two opposing directions: learning or unlearning branch.
-                </p>
-                <p>
-                    To facilitate standardized benchmarking, we also construct the <strong>C</strong>opyright <strong>I</strong>nfringement <strong>D</strong>etection <strong>D</strong>ataset <strong>(CIDD)</strong>, a comprehensive resource for evaluating detection across diverse categories. 
-                </p>                
-            </section>
-
-            <!-- <section id="intro">
-                <h2>Abstract</h2>
-                <p>
-                    The widespread deployment of large vision models such as Stable Diffusion raises significant legal and ethical concerns, as these models can memorize and reproduce copyrighted content without authorization. Existing detection approaches often lack robustness and fail to provide rigorous theoretical underpinnings. 
-                </p>
-                <p>
-                    To address these gaps, we formalize the concept of copyright infringement and its detection from the perspective of <strong>Differential Privacy (DP)</strong>, and introduce the <strong>conditional sensitivity metric</strong>, a concept analogous to sensitivity in DP, that quantifies the deviation in a diffusion model’s output caused by the inclusion or exclusion of a specific training data point. 
-                </p>
-                <p>
-                    To operationalize this metric, we propose <strong>D-Plus-Minus (DPM)</strong>,a novel post-hoc detection framework that identifies copyright infringement in text-to-image diffusion models. Specifically, DPM simulates inclusion and exclusion processes by fine-tuning models in two opposing directions: learning or unlearning. Besides, to disentangle concept-specific influence from the global parameter shifts induced by fine-tuning, DPM computes confidence scores over orthogonal prompt distributions using statistical metrics. 
-                </p>
-                <p>
-                    Moreover, to facilitate standardized benchmarking, we also construct the <strong>C</strong>opyright <strong>I</strong>nfringement <strong>D</strong>etection <strong>D</strong>ataset <strong>(CIDD)</strong>, a comprehensive resource for evaluating detection across diverse categories. 
-                </p>
-                <p>
-                    Our results demonstrate that DPM reliably detects infringement content without requiring access to the original training dataset or text prompts, offering an interpretable and practical solution for safeguarding intellectual property in the era of generative AI.
-                </p>
-            </section> -->
-            
-            <section id="method">
-                <h2>Method</h2>
-                <p>
-                    We reinterprete the detection of copyright infringement as <strong>the compliance with or violation of conditional differential publicity</strong>. Specifically, when a particular concept, such as the neighborhood images of a target image, is present or absent in the training data, it can significantly alter the model’s output in response to prompts associated with that concept. This leads to the definition of a new metric, <strong>conditional sensitivity</strong>, a principal metric for quantifying the extent of publicity and standardizing the confidence score of copyright infringement:
-
-                    <math alttext="CS(M,\hat{x}_{i})=\max_{D,D^{\prime}:D\triangle D^{\prime}\leq\{\hat{x}_{i}\}}\left|M(D)-M(D^{\prime})\right|," class="ltx_Math" display="block" intent=":literal"><semantics><mrow><mrow><mrow><mi>C</mi><mo lspace="0em" rspace="0em">​</mo><mi>S</mi><mo lspace="0em" rspace="0em">​</mo><mrow><mo stretchy="false">(</mo><mi>M</mi><mo>,</mo><msub><mover accent="true"><mi>x</mi><mo>^</mo></mover><mi>i</mi></msub><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><munder><mi>max</mi><mrow><mrow><mi>D</mi><mo>,</mo><msup><mi>D</mi><mo>′</mo></msup></mrow><mo lspace="0.278em" rspace="0.278em">:</mo><mrow><mrow><mi>D</mi><mo lspace="0em" rspace="0em">​</mo><mi mathvariant="normal">△</mi><mo lspace="0em" rspace="0em">​</mo><msup><mi>D</mi><mo>′</mo></msup></mrow><mo>≤</mo><mrow><mo stretchy="false">{</mo><msub><mover accent="true"><mi>x</mi><mo>^</mo></mover><mi>i</mi></msub><mo stretchy="false">}</mo></mrow></mrow></mrow></munder><mo>⁡</mo><mrow><mo>|</mo><mrow><mrow><mi>M</mi><mo lspace="0em" rspace="0em">​</mo><mrow><mo stretchy="false">(</mo><mi>D</mi><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><mrow><mi>M</mi><mo lspace="0em" rspace="0em">​</mo><mrow><mo stretchy="false">(</mo><msup><mi>D</mi><mo>′</mo></msup><mo stretchy="false">)</mo></mrow></mrow></mrow><mo>|</mo></mrow></mrow></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">CS(M,\hat{x}_{i})=\max_{D,D^{\prime}:D\triangle D^{\prime}\leq\{\hat{x}_{i}\}}\left|M(D)-M(D^{\prime})\right|,</annotation></semantics></math>
-
-                    where <math alttext="D" class="ltx_Math" display="inline" intent=":literal"><semantics><mi>D</mi><annotation encoding="application/x-tex">D</annotation></semantics></math> and <math alttext="D^{\prime}" class="ltx_Math" display="inline" intent=":literal"><semantics><msup><mi>D</mi><mo>′</mo></msup><annotation encoding="application/x-tex">D^{\prime}</annotation></semantics></math> are neighboring datasets that differ by the inclusion or exclusion of the conditional datapoint <math alttext="\hat{x}_{i}" class="ltx_Math" display="inline" intent=":literal"><semantics><msub><mover accent="true"><mi>x</mi><mo>^</mo></mover><mi>i</mi></msub><annotation encoding="application/x-tex">\hat{x}_{i}</annotation></semantics></math>, and the function <math alttext="M(D)" class="ltx_Math" display="inline" intent=":literal"><semantics><mrow><mi>M</mi><mo lspace="0em" rspace="0em">​</mo><mrow><mo stretchy="false">(</mo><mi>D</mi><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">M(D)</annotation></semantics></math> denotes the output of a query function when trained on dataset <math alttext="D" class="ltx_Math" display="inline" intent=":literal"><semantics><mi>D</mi><annotation encoding="application/x-tex">D</annotation></semantics></math>.
-                </p>
-                <figure>
-                    <img class="image" src="fig1.png">
-                    <figcaption><strong>Fig 1: D-Plus-Minus Method. </strong> Given the neighbourhood images <math alttext="U(x_{i})" class="ltx_Math" display="inline"><semantics><mrow><mi>U</mi><mo lspace="0em" rspace="0em">​</mo><mrow><mo stretchy="false">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">U(x_{i})</annotation></semantics></math>, i.e., several images of similar semantics extracted from the target image, of the target image <math alttext="x_{i}" class="ltx_Math" display="inline" intent=":literal"><semantics><msub><mi>x</mi><mi>i</mi></msub><annotation encoding="application/x-tex">x_{i}</annotation></semantics></math> as the training subset, we fine-tune the text-to-image model <math alttext="G" class="ltx_Math" display="inline" intent=":literal"><semantics><mi>G</mi><annotation encoding="application/x-tex">G</annotation></semantics></math> towards two branch: learning branch <math alttext="G_{D^{+}}" class="ltx_Math" display="inline" intent=":literal"><semantics><msub><mi>G</mi><msup><mi>D</mi><mo>+</mo></msup></msub><annotation encoding="application/x-tex">G_{D^{+}}</annotation></semantics></math> and unlearning branch <math alttext="G_{D^{-}}" class="ltx_Math" display="inline" intent=":literal"><semantics><msub><mi>G</mi><msup><mi>D</mi><mo>−</mo></msup></msub><annotation encoding="application/x-tex">G_{D^{-}}</annotation></semantics></math>. Experimental results show that infringed samples lead to a significant shift in sensitivity metric, whereas non-infringed samples only cause minor changes.</figcaption>
-                </figure>
-                <p>
-                    We visualize the discrepancy in conditional sensitivity in Fig.1, where the larger change observed in infringed samples compared to non-infringed ones validates its use as a reliable measurement. 
-                </p>
-            </section>
-
-            <section id="results">
-                <h2>Results</h2>
-                <div id="table-container">
-                    <table id="table-quantitative">
-                        <thead>
-                            <tr>
-                                <th rowspan="2"><strong>Class</strong></th>
-                                <th colspan="2"><strong>SD1.4</strong></th>
-                                <th colspan="2"><strong>SDXL-1.0</strong></th>
-                                <th colspan="2"><strong>SANA-0.6B</strong></th>
-                                <th colspan="2"><strong>FLUX.1</strong></th>
-                            </tr>
-                            <tr>
-                                <th>AUC &uarr;</th>
-                                <th>SoftAcc &uarr;</th>
-                                <th>AUC &uarr;</th>
-                                <th>SoftAcc &uarr;</th>
-                                <th>AUC &uarr;</th>
-                                <th>SoftAcc &uarr;</th>
-                                <th>AUC &uarr;</th>
-                                <th>SoftAcc &uarr;</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Human Face</td>
-                                <td>0.9011</td>
-                                <td>0.8058</td>
-                                <td>0.7011</td>
-                                <td>0.6289</td>
-                                <td>0.8062</td>
-                                <td>0.7285</td>
-                                <td>0.7531</td>
-                                <td>0.6419</td>
-                            </tr>
-                            <tr>
-                                <td>Architecture</td>
-                                <td>0.8021</td>
-                                <td>0.7106</td>
-                                <td>0.9256</td>
-                                <td>0.8488</td>
-                                <td>0.9043</td>
-                                <td>0.8224</td>
-                                <td>0.9500</td>
-                                <td>0.8606</td>
-                            </tr>
-                            <tr>
-                                <td>Arts Painting</td>
-                                <td>0.8555</td>
-                                <td>0.7604</td>
-                                <td>0.8881</td>
-                                <td>0.8550</td>
-                                <td>0.8140</td>
-                                <td>0.7204</td>
-                                <td>0.7326</td>
-                                <td>0.6935</td>
-                            </tr>
-                            <tr>
-                                <td>Weighted Average</td>
-                                <td>0.8584</td>
-                                <td>0.7644</td>
-                                <td>0.8170</td>
-                                <td>0.7523</td>
-                                <td>0.8398</td>
-                                <td>0.7571</td>
-                                <td>0.8122</td>
-                                <td>0.7247</td>
-                            </tr>
-                            <tr>
-                                <td>Merged Total</td>
-                                <td>0.8071</td>
-                                <td>0.6726</td>
-                                <td>0.7800</td>
-                                <td>0.7234</td>
-                                <td>0.7914</td>
-                                <td>0.6855</td>
-                                <td>0.8257</td>
-                                <td>0.7039</td>
-                            </tr>
-                        </tbody>
-                        <caption>
-                            <strong>Table 1: Quantitative Detection Metrics. </strong>Models are run separately on the classes of CIDD dataset in different models. <em>Merged Total</em> means that the &Delta;CS(&middot;) are normalized altogether, while others are normalized within the class.
-                        </caption>
-                    </table>
-                </div>
-
-                <figure>
-                    <img class="image" src="fig2.png" style="max-width: 40%">
-                    <figcaption><strong>Fig 2: Qualitative visualization of the Unlearning Branch and Learning Branch across different timesteps.</strong> Models tend to learn and unlearn faster with infringed samples, while slower on non-infringed ones, and cannot learn exact elements in the target images.</figcaption>
-                </figure>
-            </section>
-
-            <section id="dataset">
-                <h2>Dataset</h2>
-                <p><strong>C</strong>opyright <strong>I</strong>nfringement <strong>D</strong>etection <strong>D</strong>ataset <strong>(CIDD)</strong> contains several classes of orthogonal prompts and three image classes that are most likely to be infringed: human face, architecture, and arts painting. </p>
-                <p>Crucially, CIDD includes both infringed and non-infringed concepts, each of which is annotated with a binary infringement label based on its source and content provenance, and is paired with 3 to 6 neighbourhood images, enabling robust learning and evaluation under weak and probabilistic assumptions. </p>
-                <p style="color: red">As the paper is under review, dataset will be made publicly available following publication.</p>
-            </section>
-            
-            <section id="cite">
-                <h2>BibTex</h2>
-                <div class="bibtex-container">
-                    <pre><code>@misc{man2025copyrightinfringementdetectiontexttoimage,
-      title={Copyright Infringement Detection in Text-to-Image Diffusion Models via Differential Privacy}, 
-      author={Xiafeng Man and Zhipeng Wei and Jingjing Chen},
-      year={2025},
-      eprint={2509.23022},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV},
-      url={https://arxiv.org/abs/2509.23022}, 
-}</code></pre>
-                </div>
-            </section>
-        </main>
-
-        <footer>
-            <p>&copy; <span id="copyright-year"></span> Leo Xiafeng Man</p>
-        </footer>
+      </div>
     </div>
 
+  </div>
+</nav>
+
+
+<section class="hero">
+  <div class="hero-body" style="margin-top: 50px">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title" style="color: #0056b3">Copyright Infringement Detection<br> in Text-to-Image Diffusion Models<br> via Differential Privacy</h1>
+          <div style="color: #e74c3c; font-weight: bold; font-size: 1.5rem; margin-top: 0.5rem; margin-bottom: 0.5rem;">
+            AAAI 2026 Oral
+          </div>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://leo-xfm.github.io/">Xiafeng Man</a><sup>1</sup>,</span>
+            <span class="author-block">
+              <a href="https://zhipeng-wei.github.io/">Zhipeng Wei</a><sup>3,4</sup></span>
+            <span class="author-block">
+              <a href="https://jingjing1.github.io/">Jingjing Chen</a><sup>2</sup>,
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup> College of Future Information Technology, Fudan University, Shanghai, China</span><br>
+            <span class="author-block"><sup>2</sup> Institute of Trustworthy Embodied AI, Fudan University, Shanghai, China</span><br>
+            <span class="author-block"><sup>3</sup> International Computer Science Institute, CA, USA</span><br>
+            <span class="author-block"><sup>4</sup> UC Berkeley, CA, USA</span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2509.23022" target="_blank"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="https://github.com/leo-xfm/DPM-copyright-infringement-detection" target="_blank"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  </a>
+              </span>
+              <!-- Dataset Link. -->
+              <span class="link-block">
+                <a href="#" target="_blank"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="far fa-images"></i>
+                  </span>
+                  <span>Dataset (Coming Soon)</span>
+                  </a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <h2 class="subtitle has-text-justified">
+        <p>
+            <strong>TL;DR: </strong> We formalize the concept of copyright infringement and its detection from the perspective of <strong>Differential Privacy (DP)</strong>, and introduce a novel post-hoc detection framework <strong>D-Plus-Minus (DPM)</strong>. It simulates the inclusion or exclusion processes of a specific training data point to be detected by fine-tuning models in two opposing directions: learning or unlearning branch. To facilitate standardized benchmarking, we also construct the <strong>C</strong>opyright <strong>I</strong>nfringement <strong>D</strong>etection <strong>D</strong>ataset <strong>(CIDD)</strong>, a comprehensive resource for evaluating detection across diverse categories. 
+        </p>    
+      </h2>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="abstract" style="background-color:#f5f5f5; color:rgba(0,0,0,.7)">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            The widespread deployment of large vision models such as
+            Stable Diffusion raises significant legal and ethical concerns,
+            as these models can memorize and reproduce copyrighted
+            content without authorization. Existing detection approaches
+            often lack robustness and fail to provide rigorous theoretical
+            underpinnings. 
+          </p>
+          <p>
+            To address these gaps, we formalize the concept of copyright infringement 
+            and its detection from the perspective of <strong>Differential Privacy (DP)</strong>, and 
+            introduce the conditional sensitivity metric, a concept analogous to sensitivity
+            in DP, that quantifies the deviation in a diffusion model’s output caused 
+            by the inclusion or exclusion of a specific training
+            data point. To operationalize this metric, we propose <strong>D-Plus-Minus (DPM)</strong>,
+            a novel post-hoc detection framework that identifies copyright infringement 
+            in text-to-image diffusion models. 
+            Specifically, DPM simulates inclusion and exclusion processes 
+            by fine-tuning models in two opposing directions: learning or unlearning. 
+            Besides, to disentangle concept-specific influence from the global parameter 
+            shifts induced by fine-tuning, DPM computes confidence scores over 
+            orthogonal prompt distributions using statistical metrics. 
+          </p>
+          <p>
+            Moreover, to facilitate standardized benchmarking, we also construct the
+            <strong>C</strong>opyright <strong>I</strong>nfringement 
+            <strong>D</strong>etection <strong>D</strong>ataset <strong>(CIDD)</strong>, 
+            a comprehensive resource for evaluating detection across diverse categories. 
+          </p>
+          <p>
+            Our results demonstrate that DPM reliably detects infringement content without
+            requiring access to the original training dataset or text prompts, offering 
+            an interpretable and practical solution for safeguarding intellectual property in the
+            era of generative AI.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+
+  </div>
+</section>
+
+<section class="section" id="method">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-five-sixths">
+        <h2 class="title is-3">Method</h2>
+        <div class="content has-text-justified">
+          <p>
+          We reinterprete the detection of copyright infringement as <strong>the compliance with or violation of conditional differential publicity</strong>. Specifically, when a particular concept, such as the neighborhood images of a target image, is present or absent in the training data, it can significantly alter the model’s output in response to prompts associated with that concept. 
+          </p>
+          <p>
+          This leads to the definition of a new metric, <strong>conditional sensitivity</strong>, a principal metric for quantifying the extent of publicity and standardizing the confidence score of copyright infringement:
+
+          <math alttext="CS(M,\hat{x}_{i})=\max_{D,D^{\prime}:D\triangle D^{\prime}\leq\{\hat{x}_{i}\}}\left|M(D)-M(D^{\prime})\right|," class="ltx_Math" display="block" intent=":literal"><semantics><mrow><mrow><mrow><mi>C</mi><mo lspace="0em" rspace="0em">​</mo><mi>S</mi><mo lspace="0em" rspace="0em">​</mo><mrow><mo stretchy="false">(</mo><mi>M</mi><mo>,</mo><msub><mover accent="true"><mi>x</mi><mo>^</mo></mover><mi>i</mi></msub><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><munder><mi>max</mi><mrow><mrow><mi>D</mi><mo>,</mo><msup><mi>D</mi><mo>′</mo></msup></mrow><mo lspace="0.278em" rspace="0.278em">:</mo><mrow><mrow><mi>D</mi><mo lspace="0em" rspace="0em">​</mo><mi mathvariant="normal">△</mi><mo lspace="0em" rspace="0em">​</mo><msup><mi>D</mi><mo>′</mo></msup></mrow><mo>≤</mo><mrow><mo stretchy="false">{</mo><msub><mover accent="true"><mi>x</mi><mo>^</mo></mover><mi>i</mi></msub><mo stretchy="false">}</mo></mrow></mrow></mrow></munder><mo>⁡</mo><mrow><mo>|</mo><mrow><mrow><mi>M</mi><mo lspace="0em" rspace="0em">​</mo><mrow><mo stretchy="false">(</mo><mi>D</mi><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><mrow><mi>M</mi><mo lspace="0em" rspace="0em">​</mo><mrow><mo stretchy="false">(</mo><msup><mi>D</mi><mo>′</mo></msup><mo stretchy="false">)</mo></mrow></mrow></mrow><mo>|</mo></mrow></mrow></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">CS(M,\hat{x}_{i})=\max_{D,D^{\prime}:D\triangle D^{\prime}\leq\{\hat{x}_{i}\}}\left|M(D)-M(D^{\prime})\right|,</annotation></semantics></math>
+
+          where <math alttext="D" class="ltx_Math" display="inline" intent=":literal"><semantics><mi>D</mi><annotation encoding="application/x-tex">D</annotation></semantics></math> and <math alttext="D^{\prime}" class="ltx_Math" display="inline" intent=":literal"><semantics><msup><mi>D</mi><mo>′</mo></msup><annotation encoding="application/x-tex">D^{\prime}</annotation></semantics></math> are neighboring datasets that differ by the inclusion or exclusion of the conditional datapoint <math alttext="\hat{x}_{i}" class="ltx_Math" display="inline" intent=":literal"><semantics><msub><mover accent="true"><mi>x</mi><mo>^</mo></mover><mi>i</mi></msub><annotation encoding="application/x-tex">\hat{x}_{i}</annotation></semantics></math>, and the function <math alttext="M(D)" class="ltx_Math" display="inline" intent=":literal"><semantics><mrow><mi>M</mi><mo lspace="0em" rspace="0em">​</mo><mrow><mo stretchy="false">(</mo><mi>D</mi><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">M(D)</annotation></semantics></math> denotes the output of a query function when trained on dataset <math alttext="D" class="ltx_Math" display="inline" intent=":literal"><semantics><mi>D</mi><annotation encoding="application/x-tex">D</annotation></semantics></math>.
+      </p>
+      <figure>
+          <img class="image" src="images/fig1.png">
+          <figcaption style="text-align: left;"><strong>Fig 1: D-Plus-Minus Method. </strong> Given the neighbourhood images <math alttext="U(x_{i})" class="ltx_Math" display="inline"><semantics><mrow><mi>U</mi><mo lspace="0em" rspace="0em">​</mo><mrow><mo stretchy="false">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">U(x_{i})</annotation></semantics></math>, i.e., several images of similar semantics extracted from the target image, of the target image <math alttext="x_{i}" class="ltx_Math" display="inline" intent=":literal"><semantics><msub><mi>x</mi><mi>i</mi></msub><annotation encoding="application/x-tex">x_{i}</annotation></semantics></math> as the training subset, we fine-tune the text-to-image model <math alttext="G" class="ltx_Math" display="inline" intent=":literal"><semantics><mi>G</mi><annotation encoding="application/x-tex">G</annotation></semantics></math> towards two branch: learning branch <math alttext="G_{D^{+}}" class="ltx_Math" display="inline" intent=":literal"><semantics><msub><mi>G</mi><msup><mi>D</mi><mo>+</mo></msup></msub><annotation encoding="application/x-tex">G_{D^{+}}</annotation></semantics></math> and unlearning branch <math alttext="G_{D^{-}}" class="ltx_Math" display="inline" intent=":literal"><semantics><msub><mi>G</mi><msup><mi>D</mi><mo>−</mo></msup></msub><annotation encoding="application/x-tex">G_{D^{-}}</annotation></semantics></math>. Experimental results show that infringed samples lead to a significant shift in sensitivity metric, whereas non-infringed samples only cause minor changes.</figcaption>
+      </figure>
+      <p>
+          We visualize the discrepancy in conditional sensitivity in Fig.1, where the larger change observed in infringed samples compared to non-infringed ones validates its use as a reliable measurement. 
+      </p>
+      </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="result" style="background-color:#f5f5f5; color:rgba(0,0,0,.7)">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-five-sixths">
+        <h2 class="title is-3">Results</h2>
+        <div class="content has-text-justified">
+
+          <h3>Quantitative Detection Metrics</h3>
+
+          </strong> Models are run separately on the classes of CIDD dataset in different models. <em>Merged Total</em> means that the &Delta;CS(&middot;) are normalized altogether, while others are normalized within the class.</p>
+          <table>
+          <thead>
+              <tr>
+                  <th rowspan="2"><strong>Class</strong></th>
+                  <th colspan="2"><strong>SD1.4</strong></th>
+                  <th colspan="2"><strong>SDXL-1.0</strong></th>
+                  <th colspan="2"><strong>SANA-0.6B</strong></th>
+                  <th colspan="2"><strong>FLUX.1</strong></th>
+              </tr>
+              <tr>
+                  <th>AUC &uarr;</th>
+                  <th>SoftAcc &uarr;</th>
+                  <th>AUC &uarr;</th>
+                  <th>SoftAcc &uarr;</th>
+                  <th>AUC &uarr;</th>
+                  <th>SoftAcc &uarr;</th>
+                  <th>AUC &uarr;</th>
+                  <th>SoftAcc &uarr;</th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr>
+                  <td>Human Face</td>
+                  <td>0.9011</td>
+                  <td>0.8058</td>
+                  <td>0.7011</td>
+                  <td>0.6289</td>
+                  <td>0.8062</td>
+                  <td>0.7285</td>
+                  <td>0.7531</td>
+                  <td>0.6419</td>
+              </tr>
+              <tr>
+                  <td>Architecture</td>
+                  <td>0.8021</td>
+                  <td>0.7106</td>
+                  <td>0.9256</td>
+                  <td>0.8488</td>
+                  <td>0.9043</td>
+                  <td>0.8224</td>
+                  <td>0.9500</td>
+                  <td>0.8606</td>
+              </tr>
+              <tr>
+                  <td>Arts Painting</td>
+                  <td>0.8555</td>
+                  <td>0.7604</td>
+                  <td>0.8881</td>
+                  <td>0.8550</td>
+                  <td>0.8140</td>
+                  <td>0.7204</td>
+                  <td>0.7326</td>
+                  <td>0.6935</td>
+              </tr>
+              <tr>
+                  <td><strong>Weighted Average</strong></td>
+                  <td>0.8584</td>
+                  <td>0.7644</td>
+                  <td>0.8170</td>
+                  <td>0.7523</td>
+                  <td>0.8398</td>
+                  <td>0.7571</td>
+                  <td>0.8122</td>
+                  <td>0.7247</td>
+              </tr>
+              <tr>
+                  <td><strong>Merged Total</strong></td>
+                  <td>0.8071</td>
+                  <td>0.6726</td>
+                  <td>0.7800</td>
+                  <td>0.7234</td>
+                  <td>0.7914</td>
+                  <td>0.6855</td>
+                  <td>0.8257</td>
+                  <td>0.7039</td>
+              </tr>
+          </tbody>
+          </table>
+          
+          <h3>Qualitative visualization of two branches across different timesteps</h3>
+
+          <figure>
+              <img class="image" src="images/fig2.png" style="max-width: 60%">
+          </figure>
+          <p>As the figure shows, models tend to learn and unlearn faster with infringed samples, while slower on non-infringed ones, and cannot learn exact elements in the target images.</p>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="section" id="dataset">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-five-sixths">
+        <h2 class="title is-3">Dataset</h2>
+        <div class="content has-text-justified">
+
+          <p><strong>C</strong>opyright <strong>I</strong>nfringement <strong>D</strong>etection <strong>D</strong>ataset <strong>(CIDD)</strong> contains several classes of orthogonal prompts and three image classes that are most likely to be infringed: human face, architecture, and arts painting. </p>
+          <figure><img class="image" src="images/human_face.png"></figure>
+          <figure><img class="image" src="images/architecture.png"></figure>
+          <figure><img class="image" src="images/arts_painting.png"></figure>
+          <p>Crucially, CIDD includes both infringed and non-infringed concepts, each of which is annotated with a binary infringement label based on its source and content provenance, and is paired with 3 to 6 neighbourhood images, enabling robust learning and evaluation under weak and probabilistic assumptions. </p>
+          <p style="color: red">As the paper is under review, dataset will be made publicly available following publication.</p>
+
+        </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="bibteX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@misc{man2025copyrightinfringementdetectiontexttoimage,
+  title={Copyright Infringement Detection in Text-to-Image Diffusion Models via Differential Privacy}, 
+  author={Xiafeng Man and Zhipeng Wei and Jingjing Chen},
+  year={2025},
+  eprint={2509.23022},
+  archivePrefix={arXiv},
+  primaryClass={cs.CV},
+  url={https://arxiv.org/abs/2509.23022}
+}</code></pre>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            The template is borrowed from <a href="https://nerfies.github.io/">Nerfies</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
 
 </body>
 </html>
