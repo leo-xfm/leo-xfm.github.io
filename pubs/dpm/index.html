@@ -58,8 +58,9 @@
 
       <a class="navbar-item" href="#abstract">Abstract</a>
       <a class="navbar-item" href="#method">Method</a>
+      <a class="navbar-item" href="#procedure">Procedure</a>
       <a class="navbar-item" href="#result">Results</a>
-      <a class="navbar-item" href="#dataset">Dataset</a>
+      <a class="navbar-item" href="#dataset">CIDD Dataset</a>
       <a class="navbar-item" href="#bibteX">BibTeX</a>
 
       </div>
@@ -124,7 +125,7 @@
                       <i class="far fa-images"></i>
                   </span>
                   <span>Dataset</span>
-                  </a>
+                </a>
             </div>
 
           </div>
@@ -200,17 +201,78 @@
   <div class="container is-max-desktop">
     <div class="columns is-centered has-text-centered">
       <div class="column is-five-sixths">
-        <h2 class="title is-3">Method</h2>
+        <h2 class="title is-3">D-Plus-Minus (DPM) Method</h2>
         <div class="content has-text-justified">
-          <p>
-          We reinterprete the detection of copyright infringement as <strong>the compliance with or violation of conditional differential publicity</strong>. Specifically, when a particular concept, such as the neighborhood images of a target image, is present or absent in the training data, it can significantly alter the model’s output in response to prompts associated with that concept. 
-          </p>
-          <p>
-          This leads to the definition of a new metric, <strong>conditional sensitivity</strong>, a principal metric for quantifying the extent of publicity and standardizing the confidence score of copyright infringement:
 
-          <math alttext="CS(M,\hat{x}_{i})=\max_{D,D^{\prime}:D\triangle D^{\prime}\leq\{\hat{x}_{i}\}}\left|M(D)-M(D^{\prime})\right|," class="ltx_Math" display="block" intent=":literal"><semantics><mrow><mrow><mrow><mi>C</mi><mo lspace="0em" rspace="0em">​</mo><mi>S</mi><mo lspace="0em" rspace="0em">​</mo><mrow><mo stretchy="false">(</mo><mi>M</mi><mo>,</mo><msub><mover accent="true"><mi>x</mi><mo>^</mo></mover><mi>i</mi></msub><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><munder><mi>max</mi><mrow><mrow><mi>D</mi><mo>,</mo><msup><mi>D</mi><mo>′</mo></msup></mrow><mo lspace="0.278em" rspace="0.278em">:</mo><mrow><mrow><mi>D</mi><mo lspace="0em" rspace="0em">​</mo><mi mathvariant="normal">△</mi><mo lspace="0em" rspace="0em">​</mo><msup><mi>D</mi><mo>′</mo></msup></mrow><mo>≤</mo><mrow><mo stretchy="false">{</mo><msub><mover accent="true"><mi>x</mi><mo>^</mo></mover><mi>i</mi></msub><mo stretchy="false">}</mo></mrow></mrow></mrow></munder><mo>⁡</mo><mrow><mo>|</mo><mrow><mrow><mi>M</mi><mo lspace="0em" rspace="0em">​</mo><mrow><mo stretchy="false">(</mo><mi>D</mi><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><mrow><mi>M</mi><mo lspace="0em" rspace="0em">​</mo><mrow><mo stretchy="false">(</mo><msup><mi>D</mi><mo>′</mo></msup><mo stretchy="false">)</mo></mrow></mrow></mrow><mo>|</mo></mrow></mrow></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">CS(M,\hat{x}_{i})=\max_{D,D^{\prime}:D\triangle D^{\prime}\leq\{\hat{x}_{i}\}}\left|M(D)-M(D^{\prime})\right|,</annotation></semantics></math>
+        <h3>Problem Settings</h3>
+        <p>Detection of copyright infringement faces several practical challenges, such as scalability, inaccessibility of training data, 
+          conditional input unavailability, and insufficient theoretical guarantees. In light of these issues, our work operates 
+          under a realistic and challenging set of assumptions:</p>
+          &emsp;(1) white-box access to a pretrained model.<br>
+          &emsp;(2) absence of corresponding input prompt.<br>
+          &emsp;(3) inaccessibility of training data.
 
-          where <math alttext="D" class="ltx_Math" display="inline" intent=":literal"><semantics><mi>D</mi><annotation encoding="application/x-tex">D</annotation></semantics></math> and <math alttext="D^{\prime}" class="ltx_Math" display="inline" intent=":literal"><semantics><msup><mi>D</mi><mo>′</mo></msup><annotation encoding="application/x-tex">D^{\prime}</annotation></semantics></math> are neighboring datasets that differ by the inclusion or exclusion of the conditional datapoint <math alttext="\hat{x}_{i}" class="ltx_Math" display="inline" intent=":literal"><semantics><msub><mover accent="true"><mi>x</mi><mo>^</mo></mover><mi>i</mi></msub><annotation encoding="application/x-tex">\hat{x}_{i}</annotation></semantics></math>, and the function <math alttext="M(D)" class="ltx_Math" display="inline" intent=":literal"><semantics><mrow><mi>M</mi><mo lspace="0em" rspace="0em">​</mo><mrow><mo stretchy="false">(</mo><mi>D</mi><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">M(D)</annotation></semantics></math> denotes the output of a query function when trained on dataset <math alttext="D" class="ltx_Math" display="inline" intent=":literal"><semantics><mi>D</mi><annotation encoding="application/x-tex">D</annotation></semantics></math>.
+        <h3>Privacy Vulnerabilities</h3>
+        <p>
+            <strong>Differential privacy (DP)</strong> is a formal notion of algorithmic privacy, which aims to prevent the release of private information. Algorithms with DP guarantee that the model’s output does not reveal whether any single individual’s data is used. 
+        </p>
+        <p>
+            However, Previous researches (e.g., membership inference, data extraction) have revealed significant privacy vulnerabilities in the outputs of diffusion models.
+            So we hypothesize that <strong>diffusion models exhibit almost no conditional differential privacy, but with much more publicity</strong>.
+        </p>
+
+        <h3>Formalization of Copyright (Non-)Infringement</h3>
+        <p>
+          We reinterprete the detection of copyright infringement as <strong>the compliance with or violation of conditional differential publicity</strong>. Specifically, when a particular concept, such as the neighborhood images of a target image, is present or absent in the training data, it can significantly alter the model’s output in response to prompts associated with that concept. In other words:
+        </p>
+        <p style="text-align:center; font-weight:bold">
+            Differential Privacy = Copyright Non-Infringement (Datapoint not in the Training Dataset)<br>
+            Violation of Differential Privacy = Copyright Infringement (Datapoint in the Training Dataset)
+        </p>
+        <p>
+          Copyright infringement can be defined as:
+        </p>
+
+        <p><strong>Definition 1 (Copyright Infringement).</strong>
+          Let <math alttext="x_{c}\in D_{C}" class="ltx_Math" display="inline" intent=":literal"><semantics><mrow><msub><mi>x</mi><mi>c</mi></msub><mo>∈</mo><msub><mi>D</mi><mi>C</mi></msub></mrow><annotation encoding="application/x-tex">x_{c}\in D_{C}</annotation></semantics></math> denote a copyrighted data point or concept, and <math alttext="p" class="ltx_Math" display="inline" intent=":literal"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math> be an input (e.g., a text prompt) semantically aligned with <math alttext="x_{c}" class="ltx_Math" display="inline" intent=":literal"><semantics><msub><mi>x</mi><mi>c</mi></msub><annotation encoding="application/x-tex">x_{c}</annotation></semantics></math>. We say that model <math alttext="G" class="ltx_Math" display="inline" intent=":literal"><semantics><mi>G</mi><annotation encoding="application/x-tex">G</annotation></semantics></math> trained on <math alttext="D" class="ltx_Math" display="inline" intent=":literal"><semantics><mi>D</mi><annotation encoding="application/x-tex">D</annotation></semantics></math> <em class="ltx_emph ltx_font_upright">infringes</em> upon <math alttext="x_{c}" class="ltx_Math" display="inline" intent=":literal"><semantics><msub><mi>x</mi><mi>c</mi></msub><annotation encoding="application/x-tex">x_{c}</annotation></semantics></math> if there exists a measurable subset <math alttext="S\subseteq\{G(p_{i})\mid p_{i}\in U(p)\}" class="ltx_Math" display="inline" intent=":literal"><semantics><mrow><mi>S</mi><mo>⊆</mo><mrow><mo stretchy="false">{</mo><mrow><mi>G</mi><mo lspace="0em" rspace="0em">​</mo><mrow><mo stretchy="false">(</mo><msub><mi>p</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow></mrow><mo fence="true" lspace="0em" rspace="0em">∣</mo><mrow><msub><mi>p</mi><mi>i</mi></msub><mo>∈</mo><mrow><mi>U</mi><mo lspace="0em" rspace="0em">​</mo><mrow><mo stretchy="false">(</mo><mi>p</mi><mo stretchy="false">)</mo></mrow></mrow></mrow><mo stretchy="false">}</mo></mrow></mrow><annotation encoding="application/x-tex">S\subseteq\{G(p_{i})\mid p_{i}\in U(p)\}</annotation></semantics></math> such that:
+        </p>
+
+          <math alttext="\Pr[G(\theta_{D},p)\in S]\gg\Pr[G(\theta_{D^{\prime}},p)\in S]," class="ltx_Math" display="block" intent=":literal"><semantics><mrow><mrow><mrow><mi>Pr</mi><mo>⁡</mo><mrow><mo stretchy="false">[</mo><mrow><mrow><mi>G</mi><mo lspace="0em" rspace="0em">​</mo><mrow><mo stretchy="false">(</mo><msub><mi>θ</mi><mi>D</mi></msub><mo>,</mo><mi>p</mi><mo stretchy="false">)</mo></mrow></mrow><mo>∈</mo><mi>S</mi></mrow><mo stretchy="false">]</mo></mrow></mrow><mo>≫</mo><mrow><mi>Pr</mi><mo>⁡</mo><mrow><mo stretchy="false">[</mo><mrow><mrow><mi>G</mi><mo lspace="0em" rspace="0em">​</mo><mrow><mo stretchy="false">(</mo><msub><mi>θ</mi><msup><mi>D</mi><mo>′</mo></msup></msub><mo>,</mo><mi>p</mi><mo stretchy="false">)</mo></mrow></mrow><mo>∈</mo><mi>S</mi></mrow><mo stretchy="false">]</mo></mrow></mrow></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">\Pr[G(\theta_{D},p)\in S]\gg\Pr[G(\theta_{D^{\prime}},p)\in S],</annotation></semantics></math>
+        
+        <p>
+          <span class="ltx_text ltx_font_italic">where <math alttext="D^{\prime}=D\setminus\{x_{c}\}" class="ltx_Math" display="inline" intent=":literal"><semantics><mrow><msup><mi>D</mi><mo>′</mo></msup><mo>=</mo><mrow><mi>D</mi><mo>∖</mo><mrow><mo stretchy="false">{</mo><msub><mi>x</mi><mi>c</mi></msub><mo stretchy="false">}</mo></mrow></mrow></mrow><annotation encoding="application/x-tex">D^{\prime}=D\setminus\{x_{c}\}</annotation></semantics></math> is a neighboring dataset.</span>
+        </p>
+
+        <p><strong>Definition 2 (Copyright Non-Infringement).</strong>
+        Let <math alttext="x" class="ltx_Math" display="inline" intent=":literal"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math> be a non-infringed data point or concept such that <math alttext="x\notin D" class="ltx_Math" display="inline" intent=":literal"><semantics><mrow><mi>x</mi><mo>∉</mo><mi>D</mi></mrow><annotation encoding="application/x-tex">x\notin D</annotation></semantics></math> for all training datasets considered. We say that model <math alttext="G" class="ltx_Math" display="inline" intent=":literal"><semantics><mi>G</mi><annotation encoding="application/x-tex">G</annotation></semantics></math> <em class="ltx_emph ltx_font_upright">does not infringe</em> upon <math alttext="x" class="ltx_Math" display="inline" intent=":literal"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math> if for any input <math alttext="p" class="ltx_Math" display="inline" intent=":literal"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math> and for all measurable subsets <math alttext="S\subseteq\{G(p_{i})\mid p_{i}\in U(p)\}" class="ltx_Math" display="inline" intent=":literal"><semantics><mrow><mi>S</mi><mo>⊆</mo><mrow><mo stretchy="false">{</mo><mrow><mi>G</mi><mo lspace="0em" rspace="0em">​</mo><mrow><mo stretchy="false">(</mo><msub><mi>p</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow></mrow><mo fence="true" lspace="0em" rspace="0em">∣</mo><mrow><msub><mi>p</mi><mi>i</mi></msub><mo>∈</mo><mrow><mi>U</mi><mo lspace="0em" rspace="0em">​</mo><mrow><mo stretchy="false">(</mo><mi>p</mi><mo stretchy="false">)</mo></mrow></mrow></mrow><mo stretchy="false">}</mo></mrow></mrow><annotation encoding="application/x-tex">S\subseteq\{G(p_{i})\mid p_{i}\in U(p)\}</annotation></semantics></math> such that:
+      </p>
+      <p>
+        <math alttext="\Pr[G(\theta_{D},p)\in S]=\Pr[G(\theta_{D^{\prime}},p)\in S]." class="ltx_Math" display="block" intent=":literal"><semantics><mrow><mrow><mrow><mi>Pr</mi><mo>⁡</mo><mrow><mo stretchy="false">[</mo><mrow><mrow><mi>G</mi><mo lspace="0em" rspace="0em">​</mo><mrow><mo stretchy="false">(</mo><msub><mi>θ</mi><mi>D</mi></msub><mo>,</mo><mi>p</mi><mo stretchy="false">)</mo></mrow></mrow><mo>∈</mo><mi>S</mi></mrow><mo stretchy="false">]</mo></mrow></mrow><mo>=</mo><mrow><mi>Pr</mi><mo>⁡</mo><mrow><mo stretchy="false">[</mo><mrow><mrow><mi>G</mi><mo lspace="0em" rspace="0em">​</mo><mrow><mo stretchy="false">(</mo><msub><mi>θ</mi><msup><mi>D</mi><mo>′</mo></msup></msub><mo>,</mo><mi>p</mi><mo stretchy="false">)</mo></mrow></mrow><mo>∈</mo><mi>S</mi></mrow><mo stretchy="false">]</mo></mrow></mrow></mrow><mo lspace="0em">.</mo></mrow><annotation encoding="application/x-tex">\Pr[G(\theta_{D},p)\in S]=\Pr[G(\theta_{D^{\prime}},p)\in S].</annotation></semantics></math>
+      </p>
+
+      <p>
+        To allow for a relaxed setting, we say that <math alttext="G" class="ltx_Math" display="inline" intent=":literal"><semantics><mi>G</mi><annotation encoding="application/x-tex">G</annotation></semantics></math> satisfies <em class="ltx_emph ltx_font_upright">approximate non-infringement</em> if the following <math alttext="(\epsilon,\delta)" class="ltx_Math" display="inline" intent=":literal"><semantics><mrow><mo stretchy="false">(</mo><mi>ϵ</mi><mo>,</mo><mi>δ</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(\epsilon,\delta)</annotation></semantics></math>-differential privacy holds:
+      </p>
+      
+        <math alttext="\Pr[G(\theta_{D},p)\in S]\leq e^{\epsilon}\cdot\Pr[G(\theta_{D^{\prime}},p)\in S]+\delta," class="ltx_Math" display="block" intent=":literal"><semantics><mrow><mrow><mrow><mi>Pr</mi><mo>⁡</mo><mrow><mo stretchy="false">[</mo><mrow><mrow><mi>G</mi><mo lspace="0em" rspace="0em">​</mo><mrow><mo stretchy="false">(</mo><msub><mi>θ</mi><mi>D</mi></msub><mo>,</mo><mi>p</mi><mo stretchy="false">)</mo></mrow></mrow><mo>∈</mo><mi>S</mi></mrow><mo stretchy="false">]</mo></mrow></mrow><mo>≤</mo><mrow><mrow><msup><mi>e</mi><mi>ϵ</mi></msup><mo lspace="0.222em" rspace="0.222em">⋅</mo><mrow><mi>Pr</mi><mo>⁡</mo><mrow><mo stretchy="false">[</mo><mrow><mrow><mi>G</mi><mo lspace="0em" rspace="0em">​</mo><mrow><mo stretchy="false">(</mo><msub><mi>θ</mi><msup><mi>D</mi><mo>′</mo></msup></msub><mo>,</mo><mi>p</mi><mo stretchy="false">)</mo></mrow></mrow><mo>∈</mo><mi>S</mi></mrow><mo stretchy="false">]</mo></mrow></mrow></mrow><mo>+</mo><mi>δ</mi></mrow></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">\Pr[G(\theta_{D},p)\in S]\leq e^{\epsilon}\cdot\Pr[G(\theta_{D^{\prime}},p)\in S]+\delta,</annotation></semantics></math>
+        
+      <p class="ltx_p">
+        where <math alttext="D" class="ltx_Math" display="inline" intent=":literal"><semantics><mi>D</mi><annotation encoding="application/x-tex">D</annotation></semantics></math> and <math alttext="D^{\prime}" class="ltx_Math" display="inline" intent=":literal"><semantics><msup><mi>D</mi><mo>′</mo></msup><annotation encoding="application/x-tex">D^{\prime}</annotation></semantics></math> are any neighboring training datasets, and <math alttext="\theta_{D}" class="ltx_Math" display="inline" intent=":literal"><semantics><msub><mi>θ</mi><mi>D</mi></msub><annotation encoding="application/x-tex">\theta_{D}</annotation></semantics></math>, <math alttext="\theta_{D^{\prime}}" class="ltx_Math" display="inline" intent=":literal"><semantics><msub><mi>θ</mi><msup><mi>D</mi><mo>′</mo></msup></msub><annotation encoding="application/x-tex">\theta_{D^{\prime}}</annotation></semantics></math> denote the model parameters trained on <math alttext="D" class="ltx_Math" display="inline" intent=":literal"><semantics><mi>D</mi><annotation encoding="application/x-tex">D</annotation></semantics></math> and <math alttext="D^{\prime}" class="ltx_Math" display="inline" intent=":literal"><semantics><msup><mi>D</mi><mo>′</mo></msup><annotation encoding="application/x-tex">D^{\prime}</annotation></semantics></math> respectively.
+      </p>
+        
+
+        <h3>Measurement of Copyright Infringement</h3>
+        <p>
+          We introduce a new metric, <strong>conditional sensitivity</strong>, a principal metric for quantifying the extent of publicity and standardizing the confidence score of copyright infringement:
+        </p>
+        <p>
+          <math alttext="CS(M,\hat{x}_{i})=\max_{D,D^{\prime}:D\triangle D^{\prime}\leq\{\hat{x}_{i}\}}\left|M(D)-M(D^{\prime})\right|," class="ltx_Math" display="block" intent=":literal"><semantics><mrow><mrow><mrow><mi>C</mi><mo lspace="0em" rspace="0em">​</mo><mi>S</mi><mo lspace="0em" rspace="0em">​</mo><mrow><mo stretchy="false">(</mo><mi>M</mi><mo>,</mo><msub><mover accent="true"><mi>x</mi><mo>^</mo></mover><mi>i</mi></msub><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><munder><mi>max</mi><mrow><mrow><mi>D</mi><mo>,</mo><msup><mi>D</mi><mo>′</mo></msup></mrow><mo lspace="0.278em" rspace="0.278em">:</mo><mrow><mrow><mi>D</mi><mo lspace="0em" rspace="0em">​</mo><mi mathvariant="normal">△</mi><mo lspace="0em" rspace="0em">​</mo><msup><mi>D</mi><mo>′</mo></msup></mrow><mo>≤</mo><mrow><mo stretchy="false">{</mo><msub><mover accent="true"><mi>x</mi><mo>^</mo></mover><mi>i</mi></msub><mo stretchy="false">}</mo></mrow></mrow></mrow></munder><mo>⁡</mo><mrow><mo>|</mo><mrow><mrow><mi>M</mi><mo lspace="0em" rspace="0em">​</mo><mrow><mo stretchy="false">(</mo><mi>D</mi><mo stretchy="false">)</mo></mrow></mrow><mo>−</mo><mrow><mi>M</mi><mo lspace="0em" rspace="0em">​</mo><mrow><mo stretchy="false">(</mo><msup><mi>D</mi><mo>′</mo></msup><mo stretchy="false">)</mo></mrow></mrow></mrow><mo>|</mo></mrow></mrow></mrow><mo></mo></mrow><annotation encoding="application/x-tex">CS(M,\hat{x}_{i})=\max_{D,D^{\prime}:D\triangle D^{\prime}\leq\{\hat{x}_{i}\}}\left|M(D)-M(D^{\prime})\right|</annotation></semantics></math>
+        </p>
+        <p>
+          where <math alttext="D" class="ltx_Math" display="inline" intent=":literal"><semantics><mi>D</mi><annotation encoding="application/x-tex">D</annotation></semantics></math> and <math alttext="D^{\prime}" class="ltx_Math" display="inline" intent=":literal"><semantics><msup><mi>D</mi><mo>′</mo></msup><annotation encoding="application/x-tex">D^{\prime}</annotation></semantics></math> are neighboring datasets that differ by the inclusion or exclusion of the conditional datapoint <math alttext="\hat{x}_{i}" class="ltx_Math" display="inline" intent=":literal"><semantics><msub><mover accent="true"><mi>x</mi><mo>^</mo></mover><mi>i</mi></msub><annotation encoding="application/x-tex">\hat{x}_{i}</annotation></semantics></math>, and the function <math alttext="M(D)" class="ltx_Math" display="inline" intent=":literal"><semantics><mrow><mi>M</mi><mo lspace="0em" rspace="0em">​</mo><mrow><mo stretchy="false">(</mo><mi>D</mi><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">M(D)</annotation></semantics></math> denotes the output of a query function when trained on dataset <math alttext="D" class="ltx_Math" display="inline" intent=":literal"><semantics><mi>D</mi><annotation encoding="application/x-tex">D</annotation></semantics></math>. In DPM framework, we use <strong>CLIP image encoder</strong> as a query function to capture the semantics similarity between two outputs.
+      </p>
+      <p>
+         Since the presence or absence of the target data point in the training dataset is unknown, the inclusion or exclusion of the conditional datapoint could be simulated by <strong>fine-tuning a model in two opposing directions: learning to include (D+) and unlearning to exclude (D-)</strong>.
       </p>
       <figure>
           <img class="image" src="images/fig1.png">
@@ -226,7 +288,51 @@
   </div>
 </section>
 
-<section class="section" id="result" style="background-color:#f5f5f5; color:rgba(0,0,0,.7)">
+<section class="section" id="procedure" style="background-color:#f5f5f5; color:rgba(0,0,0,.7)">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-five-sixths">
+        <h2 class="title is-3">Detection Procedure</h2>
+        <div class="content has-text-justified">
+          <p>
+            <strong>Step1: Prepare a target image to be detected.</strong> Pay attention that images without specific charateristic may not be considered to infringe copyright on law and cannot be detected (e.g., landscape photos).
+          </p>
+          <p>
+            <strong>Step2: Extract and filter a core concept. </strong> It aims to exclude content not protected by copyright law, 
+            ensuring the accuracy of the detection results.
+            And we will collect photos associated with ONLY this concept in the next step.
+          </p>
+          <p>
+            <strong>Step3: Construct image-prompt pair. </strong>
+            As fine-tuning model needs several images related to the concept,
+            we construct a neighborhood of the target concept as our training dataset, consisting of similar semantics to be detected, 
+            and then specify a general prompt (format as: a photo of [V] [class]) with identifier (e.g., “[V]”, “sks”).
+          </p>
+          <p>
+            <strong>Step4: D-Plus-Minus detection framework (Branch Training & Assessment).</strong>
+            We fine-tune the model into two branches (learning and unlearning) with the constructed image-prompt pair. 
+            To assess the effect of the concept on the model’s generation behavior, we compare the outputs between a fine-tuned model and 
+            the original model under the same relevant text prompt 
+            via conditional sensitivity metric (cosine similarity of CLIP encoder embeddings).
+          </p>
+          <p>
+            <strong>Step5: Statistical analysis.</strong>
+            We construct a reference distribution by generating orthogonal images, clarifying the global parameter shifts.
+            Since this step is time-consuming, we can omit this step, and the detection result is still accurate. 
+          </p>
+          <p>
+            <strong>Output: Confidence score of copyright infringement.</strong>
+            By merging the two branches together, we can get the D-Plus-Minus score ranging in [0,1].
+          </p>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<section class="section" id="result">
   <div class="container is-max-desktop">
     <div class="columns is-centered has-text-centered">
       <div class="column is-five-sixths">
@@ -245,72 +351,29 @@
                   <th colspan="2"><strong>SANA-0.6B</strong></th>
                   <th colspan="2"><strong>FLUX.1</strong></th>
               </tr>
-              <tr>
-                  <th>AUC &uarr;</th>
-                  <th>SoftAcc &uarr;</th>
-                  <th>AUC &uarr;</th>
-                  <th>SoftAcc &uarr;</th>
-                  <th>AUC &uarr;</th>
-                  <th>SoftAcc &uarr;</th>
-                  <th>AUC &uarr;</th>
-                  <th>SoftAcc &uarr;</th>
-              </tr>
+              <tr><th>AUC &uarr;</th><th>SoftAcc &uarr;</th><th>AUC &uarr;</th><th>SoftAcc &uarr;</th>
+                  <th>AUC &uarr;</th><th>SoftAcc &uarr;</th><th>AUC &uarr;</th><th>SoftAcc &uarr;</th></tr>
           </thead>
           <tbody>
               <tr>
                   <td>Human Face</td>
-                  <td>0.9011</td>
-                  <td>0.8058</td>
-                  <td>0.7011</td>
-                  <td>0.6289</td>
-                  <td>0.8062</td>
-                  <td>0.7285</td>
-                  <td>0.7531</td>
-                  <td>0.6419</td>
+                  <td>0.9011</td><td>0.8058</td><td>0.7011</td><td>0.6289</td><td>0.8062</td><td>0.7285</td><td>0.7531</td><td>0.6419</td>
               </tr>
               <tr>
                   <td>Architecture</td>
-                  <td>0.8021</td>
-                  <td>0.7106</td>
-                  <td>0.9256</td>
-                  <td>0.8488</td>
-                  <td>0.9043</td>
-                  <td>0.8224</td>
-                  <td>0.9500</td>
-                  <td>0.8606</td>
+                  <td>0.8021</td><td>0.7106</td><td>0.9256</td><td>0.8488</td><td>0.9043</td><td>0.8224</td><td>0.9500</td><td>0.8606</td>
               </tr>
               <tr>
                   <td>Arts Painting</td>
-                  <td>0.8555</td>
-                  <td>0.7604</td>
-                  <td>0.8881</td>
-                  <td>0.8550</td>
-                  <td>0.8140</td>
-                  <td>0.7204</td>
-                  <td>0.7326</td>
-                  <td>0.6935</td>
+                  <td>0.8555</td><td>0.7604</td><td>0.8881</td><td>0.8550</td><td>0.8140</td><td>0.7204</td><td>0.7326</td><td>0.6935</td>
               </tr>
               <tr>
                   <td><strong>Weighted Average</strong></td>
-                  <td>0.8584</td>
-                  <td>0.7644</td>
-                  <td>0.8170</td>
-                  <td>0.7523</td>
-                  <td>0.8398</td>
-                  <td>0.7571</td>
-                  <td>0.8122</td>
-                  <td>0.7247</td>
+                  <td>0.8584</td><td>0.7644</td><td>0.8170</td><td>0.7523</td><td>0.8398</td><td>0.7571</td><td>0.8122</td><td>0.7247</td>
               </tr>
               <tr>
                   <td><strong>Merged Total</strong></td>
-                  <td>0.8071</td>
-                  <td>0.6726</td>
-                  <td>0.7800</td>
-                  <td>0.7234</td>
-                  <td>0.7914</td>
-                  <td>0.6855</td>
-                  <td>0.8257</td>
-                  <td>0.7039</td>
+                  <td>0.8071</td><td>0.6726</td><td>0.7800</td><td>0.7234</td><td>0.7914</td><td>0.6855</td><td>0.8257</td><td>0.7039</td>
               </tr>
           </tbody>
           </table>
@@ -327,21 +390,43 @@
   </div>
 </section>
 
-
-<section class="section" id="dataset">
+<section class="section" id="dataset" style="background-color:#f5f5f5; color:rgba(0,0,0,.7)">
   <div class="container is-max-desktop">
     <div class="columns is-centered has-text-centered">
       <div class="column is-five-sixths">
-        <h2 class="title is-3">Dataset</h2>
+        <h2 class="title is-3">Copyright Infringement Detection Dataset (CIDD)</h2>
         <div class="content has-text-justified">
+          <p>To comprehensively categorize copyright infringement in generative models, we propose <strong>a hierarchical taxonomy</strong> containing four levels of content resemblance:</p>
 
-          <p><strong>C</strong>opyright <strong>I</strong>nfringement <strong>D</strong>etection <strong>D</strong>ataset <strong>(CIDD)</strong> contains several classes of orthogonal prompts and three image classes that are most likely to be infringed: human face, architecture, and arts painting. </p>
+          <table>
+          <thead>
+              <tr>
+                  <th><strong>Level</strong></th>
+                  <th><strong>Categories</strong></th>
+                  <th><strong>Examples</strong></th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr><td>Level 1</td><td>Technics</td><td>—</td></tr>
+              <tr><td>Level 2</td><td>Content</td><td>Human Face*</td></tr>
+              <tr><td>Level 3-1</td><td>Structure</td><td>Architecture*</td></tr>
+              <tr><td>Level 3-2</td><td>Style</td><td>Arts Painting*</td></tr>
+              <tr><td>Level 4</td><td>Semantics</td><td>Plots & Themes</td></tr>
+          </tbody>
+          </table>
+
+          <p style="font-style: italic; ">
+            <strong>Table: Hierarchical Categories of Copyright Infringement.</strong> It is ordered from low-level perceptual features to high-level conceptual constructs. “*” means the used classes in CIDD dataset.
+          </p>
+
+          <p><strong>C</strong>opyright <strong>I</strong>nfringement <strong>D</strong>etection <strong>D</strong>ataset <strong>(CIDD)</strong> contains several classes of orthogonal prompts and three image classes that are most likely to be infringed, mapping to Level 2&3: human face, architecture, and arts painting. </p>
           <figure><img class="image" src="images/human_face.png"></figure>
           <figure><img class="image" src="images/architecture.png"></figure>
           <figure><img class="image" src="images/arts_painting.png"></figure>
           <p>Crucially, CIDD includes both infringed and non-infringed concepts, each of which is annotated with a binary infringement label based on its source and content provenance, and is paired with 3 to 6 neighbourhood images, enabling robust learning and evaluation under weak and probabilistic assumptions. </p>
-          <!-- <p style="color: red">As the paper is under review, dataset will be made publicly available following publication.</p> -->
-
+          
+          <p>You can download the CIDD dataset 
+            <a href="https://drive.google.com/file/d/15Y7IWIBus6Fxd9jNwVoBUAY3Ob25jgkS/view?usp=sharing" target="_blank">here</a>.
         </div>
     </div>
   </div>
