@@ -5,13 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="js/bootstrap.min.css" rel="stylesheet">
 
     <meta name="keywords" content="Xiafeng Man, 满夏风, fudan, Computer Vision">
     <meta name="description" content="Personal page of Xiafeng Man">
-    <link rel="stylesheet" href="style.css">
-    <title>Leo Xiafeng Man - Personal Homepage</title>
+    <link rel="stylesheet" href="style/style.css">
+    <title>Xiafeng Man</title>
 </head>
 
 <!-- Google tag (gtag.js) -->
@@ -24,26 +23,34 @@
   gtag('config', 'G-JP76QXZGKM');
 </script>
 
-<body>
+<body id="top">
 
-    <nav class="navbar navbar-expand-md navbar-light fixed-top" style="background-color: #ebebeb">
-        <a class="navbar-brand ms-5" href="https://github.com/leo-xfm" style="font-weight: bold;">Homepage</a>
-
-        <div class="collapse navbar-collapse" id="navbarToggle">
-            <ul class="navbar-nav ms-auto mb-2 mb-md-0 me-5">
+    <nav class="navbar navbar-expand-md navbar-light fixed-top liquid-glass-nav">
+        <div class="liquid-glass-shell" style="font-family: OptimaM;">
+            <a class="navbar-brand liquid-glass-brand" href="#top">Homepage</a>
+            <button class="navbar-toggler liquid-glass-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggle"
+                aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarToggle">
+                <ul class="navbar-nav mb-2 mb-md-0">
 				<li class="nav-item"><a class="nav-link" href="#research">Research</a></li>
 				<li class="nav-item"><a class="nav-link" href="#news">News</a></li>
 				<li class="nav-item"><a class="nav-link" href="#pub">Publications</a></li>
-			</ul>
-		</div>
+				<!-- <li class="nav-item"><a class="nav-link" href="#service">Service</a></li> -->
+			    </ul>
+		    </div>
+        </div>
 	</nav>
 
     <div class="container">
 
-        <header>
-            <h1>Xiafeng Man</h1>
-            <!-- <h1>Xiafeng Man <a style="letter-spacing: 4px;">满夏风</a></h1> -->
-            <p>Undergraduate Student  |  Fudan University</p>
+        <header style="font-family: OptimaM;">
+            <div>
+                <h1>Xiafeng MAN</h1>
+                <!-- <h1>Xiafeng Man <a style="letter-spacing: 4px;">满夏风</a></h1> -->
+                <p style="font-family: OptimaM;">Undergraduate Student  |  Fudan University</p>
+            </div>
             <div class="social-links">
                 <a href="mailto:xfmanacad@outlook.com">Email</a>
                 <a href="https://github.com/leo-xfm">GitHub</a>
@@ -52,19 +59,24 @@
         </header>
 
         <main>
-            <section id="bio" style="font-family: Georgia, 'Times New Roman', Times, serif; font-size: 1.1em;">
+            <section id="bio">
                 <br>
                 <p>
-                    I am an undergraduate student at <a href="https://www.fudan.edu.cn/en/" target="_blank">Fudan Univeristy</a>, majoring in <strong>Electronic Information Science and Technology</strong>. Now, I work closely with <a href="https://cse.hkust.edu.hk/~songguo/" target="_blank">Prof. Song GUO</a> and Dr. Xiaosong Ma in HKUST. Previously, I worked under the supervision of <a href="https://jingjing1.github.io" target="_blank">Prof. Jingjing Chen</a>, focusing on computer vision (generative AI and multimodal AI). 
+                    I am currently an undergraduate student at <a href="https://www.fudan.edu.cn/en/" target="_blank">Fudan Univeristy</a>, majoring in <strong>Electronic Information Science and Technology</strong>. 
+                    Now, I work closely with <a href="https://www.cs.jhu.edu/~ayuille1/" target="_blank">Prof. Alan L. Yuille</a> and <a href="https://beckschen.github.io/" target="_blank">Dr. Jieneng Chen</a> in Johns Hopkins University, focusing on spatial intelligence.
+                </p>
+                <p>               
+                    Previously, I worked closely with <a href="https://cse.hkust.edu.hk/~songguo/" target="_blank">Prof. Song GUO</a>, Dr. Xiaosong Ma (HKUST), and <a href="https://jingjing1.github.io" target="_blank">Prof. Jingjing Chen</a> (Fudan Univ). 
                 </p>
             </section>
             
             <section id="research">
-                <h2>Research Highlights</h2>
+                <h2>Research Interests</h2>
                 <ul>
-                    <li><strong>Computer Vision</strong>: world model, generative AI and multimodal AI.</li>
-                    <li><strong>AI Agents</strong>: interleaved reasoning.</li>
-                    <li><strong>Responsible and Trustworthy AI</strong>: identify AI-generated content, unlearn specific NSFW data, and attribute data at scale.</li>
+                    <li><strong>Computer Vision</strong>: Generative AI, Multimodal AI, Responsible and Trustworthy AI (Unlearning and Attribution).</li>
+                    <li><strong>World Model and Spatial Intelligence</strong>: Dexterous Hand Manipulation.</li>
+                    <li><strong>LLM-Based Agents</strong>: Interleaved Reasoning, Context Compression.</li>
+                    <!-- <li><strong>Responsible and Trustworthy AI</strong>: identify AI-generated content, unlearn specific NSFW data, and attribute data at scale.</li> -->
                     <!-- <li><strong>Data Attribution</strong>: trace the influence of specific training data points on the output of generative models.</li> -->
                 </ul>
             </section>
@@ -78,28 +90,29 @@
             
             <section id="pub">
                 <h2>Publications</h2>
-                <p style="padding: 0 0 10px 10px; color: gray;">( * <i>equal contribution</i>, † <i>corresponding author</i> )</p>
-                <div class="publication">
-                    <h3>Copyright Infringement Detection in Text-to-Image Diffusion Models via Differential Privacy</h3>
-                    <p class="authors"><strong>Xiafeng Man</strong>, Zhipeng Wei, Jingjing Chen<sup>†</sup></p>
-                    <p class="venue">The Association for the Advancement of Artificial Intelligence (AAAI), Singapore, 2026 <b style="color: #AF2121;">[Oral]</b></p>
-                    <p class="links">
-                        <a href="https://arxiv.org/abs/2509.23022" target="_blank">[Paper]</a> 
-                        <a href="https://github.com/leo-xfm/DPM-copyright-infringement-detection" target="_blank">[Code]</a> 
-                        <a href="./pubs/dpm" target="_blank">[Project Page]</a>
-                    </p>
-                </div>
+                <p style="padding: 0 0 0 10px; color: gray; font-size: 17px;" >
+                    ( * equal contribution, † corresponding author )
+                </p>
+                <div id="pub-container"></div>
             </section>
+
+            <!-- <section id="service">
+                <h2>Academic Service</h2>
+                <ul>
+                    <li>Conference Reviewer</li>
+                    <li>Teaching Assistant</li>
+            </section> -->
+
         </main>
 
         <footer>
-            <p>&copy; <span id="copyright-year"></span> Leo Xiafeng Man | Last Updated in Nov. 2025</p><br>
+            <p>&copy; <span id="copyright-year"></span> Leo Xiafeng Man | Last Updated in July 2026</p><br>
         </footer>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
-    </script>
+    <script src="js/publication.js"></script>
+
+    <script src="js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>
