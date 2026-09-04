@@ -258,6 +258,31 @@ body[data-page="home"] .home-container {
     margin-top: 0;
 }
 
+.section-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.section-heading h2 {
+    flex: 1;
+}
+
+.home-content .more-link {
+    flex: none;
+    color: #05509F;
+    font-family: OptimaM, "Segoe UI", Arial, sans-serif;
+    font-size: 0.9rem;
+    font-weight: 650;
+    white-space: nowrap;
+}
+
+.home-content .more-link:hover,
+.home-content .more-link:focus {
+    color: #d4a72c;
+}
+
 .home-content footer {
     margin-top: 38px;
 }
