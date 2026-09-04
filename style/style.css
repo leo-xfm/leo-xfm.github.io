@@ -33,7 +33,7 @@ body {
     background-color: #f3f4f6;
     margin: 0;
     padding: 0;
-    font-size: 1.2em;
+    font-size: 1.1em;
 }
 
 .liquid-glass-nav {
@@ -139,6 +139,129 @@ body {
     padding-top: 150px;
 }
 
+body[data-page="home"] .home-container {
+    max-width: 1180px;
+    padding-top: 112px;
+}
+
+.home-layout {
+    --profile-column-width: clamp(220px, 21vw, 273px);
+    display: grid;
+    grid-template-columns: var(--profile-column-width) minmax(0, 1fr);
+    align-items: start;
+    gap: clamp(36px, 5vw, 64px);
+}
+
+.profile-sidebar {
+    min-width: 0;
+}
+
+.profile-panel {
+    position: fixed;
+    top: 96px;
+    width: var(--profile-column-width);
+    font-family: OptimaM, "Segoe UI", Arial, sans-serif;
+    text-align: center;
+}
+
+.profile-photo {
+    display: block;
+    width: min(210px, 100%);
+    aspect-ratio: 1;
+    object-fit: cover;
+    border: 4px solid rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    box-shadow: 0 8px 22px rgba(15, 23, 42, 0.12);
+    margin: 24px auto;
+}
+
+.profile-panel h1 {
+    margin: 22px 0 8px;
+    color: #111827;
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+}
+
+.profile-role {
+    margin: 0;
+    color: #6b7280;
+    font-size: 1.2rem;
+    line-height: 1.55;
+}
+
+.profile-links {
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    gap: 12px;
+    margin-top: 22px;
+    font-family: "Segoe UI", Arial, sans-serif;
+    font-size: 1.2rem;
+}
+
+.profile-links .social-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    padding: 6px;
+    color: #374151;
+}
+
+.profile-links .social-icon i {
+    width: 20px;
+    color: #1080E7;
+    text-align: center;
+}
+
+.profile-links .social-icon:hover,
+.profile-links .social-icon:focus {
+    color: #d4a72c;
+    transform: translateX(3px);
+}
+
+.visitor-panel {
+    max-width: 220px;
+    margin: 22px auto 0;
+    overflow: hidden;
+    color: #6b7280;
+    font-family: "Segoe UI", Arial, sans-serif;
+    font-size: 0.8rem;
+}
+
+.visitor-title {
+    margin: 0 0 8px;
+    color: #4b5563;
+    font-weight: 600;
+}
+
+.visitor-panel img,
+.visitor-panel iframe,
+.visitor-panel canvas,
+.visitor-panel svg {
+    display: block;
+    margin-right: auto !important;
+    margin-left: auto !important;
+    max-width: 100% !important;
+}
+
+.home-content {
+    min-width: 0;
+}
+
+.home-content #bio {
+    padding-top: 0;
+}
+
+.home-content #bio p:first-child {
+    margin-top: 0;
+}
+
+.home-content footer {
+    margin-top: 38px;
+}
+
 header {
     text-align: center;
 }
@@ -174,7 +297,7 @@ section {
 h2 {
     position: relative;
     font-family: OptimaM, "Segoe UI", Arial, sans-serif;
-    font-size: 1.5em;
+    font-size: 1.3em;
     font-weight: 650;
     letter-spacing: 0.01em;
     padding: 18px 0 6px 10px;
@@ -257,6 +380,7 @@ h2::after {
 .publication-note {
     padding: 0 0 10px 10px;
     color: gray;
+    font-size: 0.82em;
 }
 
 .publication-filters {
@@ -450,6 +574,46 @@ footer p {
     color: #d4a72c;
     text-decoration: none;
     font-weight: bold;
+}
+
+@media (max-width: 991.98px) {
+    body[data-page="home"] .home-container {
+        padding-top: 112px;
+    }
+
+    .home-layout {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 36px;
+    }
+
+    .profile-panel {
+        position: static;
+        width: auto;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .profile-photo {
+        width: min(200px, 65vw);
+    }
+
+    .profile-links {
+        align-items: center;
+    }
+
+    .profile-links .social-icon {
+        justify-content: center;
+        width: auto;
+    }
+
+    .visitor-panel {
+        width: min(220px, 100%);
+        margin-right: auto;
+        margin-left: auto;
+        text-align: center;
+    }
 }
 
 @media (max-width: 767.98px) {
