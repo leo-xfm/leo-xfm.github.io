@@ -8,23 +8,34 @@ const SITE_PUBLICATIONS = [
         year: "2026",
         selected: false,
         types: ["selected", "preprint"],
-        keywords: ["safety"],
+        keywords: ["safety", "cv", "agent"],
+        description: `We extend the post-hoc detection framework <a href="https://ojs.aaai.org/index.php/AAAI/article/view/37735">D-Plus-Minus</a> into Dual-Branch Conditional Sensitivity (DCS), a unified formulation that treats copyright infringement evidence as a counterfactual conditional distribution shift. We instantiate this framework across ridge-regularized linear regression, conditional diffusion models, autoregressive language models, and multimodal architectures. These applications demonstrate how a single underlying principle can be evaluated through distinct mechanisms: prediction gaps, image-embedding divergence, token-distribution or entropy shifts, and cross-modal representation changes.`,
         links: {
             arxiv: "https://arxiv.org/abs/2607.22035"
         }
     },
     {
         title: "ARSM: Auto-Regressive State Machine for Agentic Reasoning Compression",
-        authors: ["Xiafeng Man*", "Xiaosong Ma*†", "Siyuan Ye*"],
+        image: "pubs/arsm.png",
+        imageRatio: "5118 / 1575",
+        imageAlt: "Overview of the state transition mechanism. The model’s structured generation space is parsed to yield a discrete routing signal; atomic operators are then dynamically applied to update their respective layers.", 
+        authors: ["Xiafeng Man*", "Siyuan Ye*", "Xiaosong Ma†"],
         venue: "arxiv",
         year: "2026",
         selected: true,
         types: ["selected", "preprint"],
         keywords: ["agent"],
-        description: "We propose Auto-Regressive State Machine (ARSM), a lightweight framework that enables in-situ reasoning compression through structured state evolution, without relying on external auxiliary models. ARSM reorganizes interaction histories into compact Hypothesis–Action–Result (HAR) micro-chains and utilizes a dynamic state machine to regulate hierarchical memory."
+        description: "We propose Auto-Regressive State Machine (ARSM), a lightweight training-free framework that enables in-situ reasoning compression through structured state evolution, without relying on external auxiliary models. ARSM reorganizes interaction histories into compact Hypothesis–Action–Result (HAR) micro-chains and utilizes a dynamic state machine to regulate hierarchical memory.",
+        links: {
+            code: "https://github.com/leo-xfm/ARSM",
+            arxiv: "https://arxiv.org/abs/2609.32852"
+        }
     },
     {
         title: "Copyright Infringement Detection in Text-to-Image Diffusion Models via Differential Privacy",
+        image: "pubs/dpm/images/fig1.png",
+        imageRatio: "1189 / 528",
+        imageAlt: "Overview of the D-Plus-Minus Method. Given the neighbourhood images of the target image as the training subset, we fine-tune the text-to-image model towards two branch: learning and unlearning branch.",
         authors: ["Xiafeng Man", "Zhipeng Wei", "Jingjing Chen†"],
         venue: "aaai",
         loc: "Singapore",
@@ -46,22 +57,30 @@ const SITE_PUBLICATIONS = [
 const TYPE_LABELS = { selected: "Selected", poster: "Poster", highlight: "Highlight", oral: "Oral", preprint: "Preprint" };
 const KEYWORD_LABELS = { 
     cv: "Computer Vision",
-    agent: "Agent", 
+    agent: "LLM Agent", 
     safety: "AI Safety"
 };
 
 const venueTemplates = {
+    // general
+    arxiv: "arXiv Preprint",
     icml: "The International Conference on Machine Learning (<strong>ICML</strong>)",
     nips: "The Conference on Neural Information Processing Systems (<strong>NeurIPS</strong>)",
     iclr: "The International Conference on Learning Representations (<strong>ICLR</strong>)",
+    aaai: "The Association for the Advancement of Artificial Intelligence (<strong>AAAI</strong>)",
+    // robotics
+    icra: "The International Conference on Robotics and Automation (<strong>ICRA</strong>)",
+    rss: "The Robotics: Science and Systems (<strong>RSS</strong>)",
+    // vision
     cvpr: "The IEEE/CVF Conference on Computer Vision and Pattern Recognition (<strong>CVPR</strong>)",
     eccv: "The European Conference on Computer Vision (<strong>ECCV</strong>)",
     iccv: "The International Conference on Computer Vision (<strong>ICCV</strong>)",
+    // graphics
+    siggraph: "The ACM International Conference on Computer Graphics and Interactive Techniques (<strong>ACM SIGGRAPH</strong>)",
     acmmm: "The ACM International Conference on Multimedia (<strong>ACM MM</strong>)",
+    // llm
     acl: "The Association for Computational Linguistics (<strong>ACL</strong>)",
     emnlp: "The Conference on Empirical Methods in Natural Language Processing (<strong>EMNLP</strong>)",
-    aaai: "The Association for the Advancement of Artificial Intelligence (<strong>AAAI</strong>)",
-    arxiv: "arXiv Preprint"
 };
 
 function filterUrlForType(type) {
@@ -110,7 +129,7 @@ function renderBadge(badge) {
 }
 
 function renderDescription(description) {
-    return description ? `<p class="description">${description}</p>` : "";
+    return description ? `<div class="publication-summary"><div><p class="description" lang="en">${description}</p></div></div>` : "";
 }
 
 function renderLink(url, text) {
@@ -133,16 +152,23 @@ function renderLinks(links) {
 
 function renderPublicationCard(publication, hiddenTypes = []) {
     return `
-        <div class="publication" data-year="${publication.year}" data-types="${publication.types.join(" ")}" data-keywords="${publication.keywords.join(" ")}">
+        <div class="publication" tabindex="0" aria-label="${publication.title}" data-year="${publication.year}" data-types="${publication.types.join(" ")}" data-keywords="${publication.keywords.join(" ")}">
+            <div class="publication-layout${publication.image ? " publication-with-image" : ""}">
+            <div class="publication-header">
             <div class="publication-badges">
                 ${renderPublicationTypes(publication, hiddenTypes)}
                 ${renderPublicationKeywords(publication)}
             </div>
             <p class="title">${publication.title}</p>
+            </div>
+            <div class="publication-details">
             <p class="authors">${renderAuthors(publication.authors, "Xiafeng Man")}</p>
             <p class="venue">${renderVenue(publication)}</p>
-            ${renderDescription(publication.description)}
+                ${renderDescription(publication.description)}
             ${renderLinks(publication.links)}
+            </div>
+                ${publication.image ? `<figure class="publication-figure"><div class="publication-image-frame" style="--image-ratio: ${publication.imageRatio};"><img class="publication-image" src="${publication.image}" alt="${publication.imageAlt}" loading="lazy"></div><figcaption class="publication-image-caption"><span>${publication.imageAlt}</span></figcaption></figure>` : ""}
+            </div>
         </div>
     `;
 }

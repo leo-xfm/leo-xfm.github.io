@@ -1,0 +1,125 @@
+@font-face {
+    font-family: "Optima";
+    src: url("optima.woff") format("woff");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "OptimaM";
+    src: url("optima-medium.woff") format("woff");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "caslon";
+    src: url("LibreCaslonText-Regular.ttf") format("woff");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+:root {
+    --font-size-body: 18px;
+    --font-size-section-heading: 26px;
+    --font-size-caption: 12px;
+    --font-size-small: 14px;
+    --font-size-medium: 16px;
+    --font-size-medium-body: 18px;
+    --font-size-large: 20px;
+    --font-size-subtitle: 22px;
+    --font-size-title: 25px;
+    --font-size-display-title: 40px;
+
+    --color-dark-gray: #1f2937;
+    --color-medium-gray: #4b5563;
+    --color-gray: #6b7280;
+    --color-light-gray: #f3f4f6;
+    --color-soft-gray: #eef2f7;
+
+    --color-near-black: #111827;
+
+    --color-dark-slate-text: #334155;
+    --color-dark-slate: #475569;
+    --color-slate: #374151;
+
+    --color-red: #8b0000;
+
+    --color-blue: #1080E7;
+    --color-dark-blue: #05509F;
+    --color-link-blue: #214F9A;
+
+    --color-gold: #d4a72c;
+
+    --color-border: #cbd5e1;
+    --color-white: #ffffff;
+    --color-hover-gray: #e2e8f0;
+    --color-blue-border: #7bb7ee;
+    --color-blue-background: #dbeeff;
+
+    --color-purple-border: #ddd6fe;
+    --color-light-purple-border: #c4b5fd;
+    --color-purple-background: #f3f0ff;
+    --color-light-purple-background: #ede9fe;
+    --color-purple: #6d28d9;
+    --color-dark-purple: #5b21b6;
+
+    --color-pink-border: #fecdd3;
+    --color-light-pink-border: #fda4af;
+    --color-pink-background: #fff1f2;
+    --color-light-pink-background: #ffe4e6;
+    --color-pink: #be123c;
+    --color-dark-pink: #9f1239;
+    
+    --color-page-background: #f3f4f6;
+    --color-nav-background: rgba(242, 245, 249, 0.42);
+    --color-nav-border: rgba(166, 180, 202, 0.42);
+    --color-white-overlay: rgba(255, 255, 255, 0.10);
+    --color-white-border: rgba(255, 255, 255, 0.5);
+    --color-white-background: rgba(255, 255, 255, 0.24);
+    --color-photo-border: rgba(255, 255, 255, 0.9);
+    --color-heading-accent: rgba(37, 99, 235, 0.28);
+    --color-filter-background: rgba(255, 255, 255, 0.46);
+    --color-filter-border: rgba(255, 255, 255, 0.6);
+    --color-footer-border: rgba(188, 208, 236, 0.45);
+    --color-nav-text: rgba(31, 41, 55, 0.88);
+    --color-focus-outline: rgba(13, 110, 253, 0.18);
+    --color-education-line: #e5e7eb;
+    --color-education-dot: #82976d;
+
+    --space-xxs: 4px;
+    --space-xs: 6px;
+    --space-s: 8px;
+    --space-m: 10px;
+    --space-l: 14px;
+    --space-xl: 18px;
+    --space-2xl: 24px;
+    --space-3xl: 28px;
+    --space-4xl: 32px;
+    --space-5xl: 36px;
+    --space-6xl: 50px;
+    --space-zero: 0;
+    --space-auto: auto;
+
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-strong: 650;
+    --font-weight-bold: 700;
+
+    --font-family-body: sans-serif, "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+    --font-family-ui: "Segoe UI", Arial, sans-serif;
+    --font-family-display: OptimaM, "Segoe UI", Arial, sans-serif;
+
+    --content-max-width: 1100px;
+    --content-max-width-wide: 1180px;
+    --radius-control: 8px;
+    --radius-panel: 20px;
+    --radius-pill: 999px;
+    --shadow-photo: 0 8px 22px rgba(15, 23, 42, 0.12);
+    --shadow-panel: 0 4px 12px rgba(15, 23, 42, 0.035);
+    --transition-fast: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+    --transition-normal: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease;
+}
